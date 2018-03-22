@@ -1,0 +1,6 @@
+library(rmarkdown)
+render("MelbourneWaterHigherLevel.Rmd", output_format = 'all')
+render("BarwonWaterHigherLevel.Rmd", output_format = 'all')
+render("SouthEastWaterHigherLevel.Rmd", output_format = 'all')
+render("ColibanWaterHigherLevel.Rmd", output_format = 'all')
+render("CityWestWaterHigherLevel.Rmd", output_format = 'all')

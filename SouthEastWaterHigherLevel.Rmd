@@ -1,0 +1,884 @@
+---
+title: "Status of climate adaptation in the Australian Water Utilities: results from survey of higher level managers"
+output:
+  html_document:
+    df_print: paged
+    number_sections: yes
+    toc: yes
+    toc_depth: '2'
+  html_notebook:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+  pdf_document:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
+---
+
+<!--For automatic fig captioning and citation, see http://derekogle.com/fishR/2015-09-17-Figure-Table-Captions-in-Markdown-->
+
+```{r echo=FALSE, results='hide'}
+utility_name <- 'South East Water'
+```
+
+# Results for `r utility_name` and comparison to national data from other utilities surveyed
+
+We conducted a survey, targeted at higher-level managers, with the primary aim of identifying officers that have produced climate adaptation information. In addition, we also wanted to capture the extent to which climate adaptation is incorporated within decision making and the importance of climate change in the mindset of managers and within leadership. This is because the role of climate-adaptation within water utilities is significantly determined by higher-level managers and leaders. In this document, we present detailed results of this survey, comparing responses arising from `r utility_name` with the other Australian utilities surveyed. The utilities taking part in this survey were Water Corporation of Western Australia, South Australian Water Corporation, Melbourne Water, South East Water, City West Water, Yarra Valley Water, Coliban Water, Barwon Water, Sydney Water, and Hunter Valley Water.
+
+```{r echo=FALSE, results='hide'}
+library(readxl)
+df <- read_excel('/home/a1091793/Documents/Projects/WaterRA Data driven Climate Adaptation/Survey/Results 23 Feb 2018/High level survey of climate adaptation v2 aggregated.xlsx')
+df_utility <- df[df$WaterUtility == utility_name, ]
+df_other_utilities <- df[df$WaterUtility != utility_name, ]
+```
+
+## Survey respondents
+The following people responded to this survey:
+
+```{r echo=FALSE, results='asis'}
+cat(paste('-', df_utility$Name, " (", df_utility$CoreArea, ")"), sep="\n")
+```
+
+The following people were identified by the respondents for inclusion in the more detailed survey on developing climate adaptation information.
+
+```{r echo=FALSE, results='asis'}
+cat(paste('-', df_utility$ClimateOfficers[!is.na(df_utility$ClimateOfficers)]), sep="\n")
+```
+
+These people were also identified as being important within the climate adaptation process in the water utlity:
+
+```{r echo=FALSE, results='asis'}
+cat(paste('-',df_utility$OtherPeople[!is.na(df_utility$OtherPeople)]), sep="\n")
+```
+
+```{r echo=FALSE, results='hide'}
+# Multiple plot function
+#
+# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
+# - cols:   Number of columns in layout
+# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
+#
+# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
+# then plot 1 will go in the upper left, 2 will go in the upper right, and
+# 3 will go all the way across the bottom.
+#
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  library(grid)
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+```
+
+## Embedment of climate adaptation within water utilities
+
+The WSAA guidelines provide suggestions on how climate adaptation can be embedded within a water utility focussing on the board, chief executive, top-level management, resourcing and lower-level roles. We asked respondents whether these suggestions are in place within the utilities they work for.  
+
+### Leadership considers that climate change is a key risk that needs addressing from a whole-of-business perspective
+
+Water utilities differ in their size, scope, organisation and business processes. Therefore, specific staffing and resourcing requirements cannot be generalised across water utilities. Saying that, general guidance can be provided, including that the leadership at the highest level acknowledges that climate change is a key risk and supports addressing this risk from a whole-of-business perspective. In accordance to this suggestion provided by the WSAA Guidelines, we asked whether this leadership existed at the board, chief executive office and senior management level.  
+
+#### Leadership at the board level
+
+The figure below (Fig. 1.) shows the level to which the water utility board considers climate adaptation as a key risk that needs addressing from a whole-of-business perpective, as stated by managers at their utility. As can be seen, managers tended to view the board as strongly supporting climate adaptation.  
+
+```{r fig.width=7, fig.height=2, echo=FALSE}
+library(captioner)
+figs <- captioner(prefix="Figure")
+library(grid)
+grid.newpage()
+
+board_support_v <- df$BoardSupport
+board_support_v  <- factor(board_support_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+board_support_df <- as.data.frame(table(board_support_v))
+library(ggplot2)
+g <- ggplot(data=board_support_df, aes(x=board_support_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") +xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+board_support_v_utility <- df_utility$BoardSupport
+board_support_v_utility  <- factor(board_support_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+board_support_df_utility <- as.data.frame(table(board_support_v_utility))
+library(ggplot2)
+g_utility <- ggplot(data=board_support_df_utility, aes(x=board_support_v_utility, y=Freq))
+print(g_utility + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") +xlab("") + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+```{r echo=FALSE, results='hide'}
+figs(name="board_leadership", "Frequency of responses by water utility managers to the question: \"The board considers that climate change is a key risk that needs addressing from a whole-of-business perspective,\" given a rating scale between 'strongly disagree' to 'strongly agree.'")
+```
+`r figs("board_leadership")`
+
+
+#### Leadershop at the chief executive officer level
+
+Fig. 2, below, shows the level to which the chief executive officer considers climate adaptation as a key risk that needs addressing from a whole-of-business perpective, as stated by managers at their utility. As can be seen, managers tended to view the CEO as strongly supporting climate adaptation, with similar results here as for those regarding board level support.  
+
+```{r fig.width=7, fig.height=2, echo=FALSE}
+grid.newpage()
+
+chief_executive_support_v <- df$ChiefExecutyiveSupport
+chief_executive_support_v  <- factor(chief_executive_support_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+chief_executive_support_df <- as.data.frame(table(chief_executive_support_v))
+g <- ggplot(data=chief_executive_support_df, aes(x=chief_executive_support_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") +xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+chief_executive_support_v_utility <- df_utility$ChiefExecutyiveSupport
+chief_executive_support_v_utility  <- factor(chief_executive_support_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+chief_executive_support_df_utility <- as.data.frame(table(chief_executive_support_v_utility))
+g <- ggplot(data=chief_executive_support_df_utility, aes(x=chief_executive_support_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") +xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. 2. Frequency of responses by water utility managers to the question: "The chief executive officer considers that climate change is a key risk that needs addressing from a whole-of-business perspective," given a rating scale between 'strongly disagree' to 'strongly agree.'  
+
+#### leadership at the senior management level
+
+Fig. 3, below, shows the level to which senior managers support climate adaptation. Again, climate adaptation is shown to be highly supported at senior management level, although the average agreement to the question 'Senior management considers that Climate change is a key risk that needs addressing from a whole-of-business perspective' was slightly lower than those provided for this question at the board and CEO level.  
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+senior_management_support_v <- df$ChiefExecutyiveSupport
+senior_management_support_v  <- factor(senior_management_support_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+senior_management_support_df <- as.data.frame(table(senior_management_support_v))
+g <- ggplot(data=senior_management_support_df, aes(x=senior_management_support_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") +xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+senior_management_support_v_utility <- df_utility$ChiefExecutyiveSupport
+senior_management_support_v_utility  <- factor(senior_management_support_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+senior_management_support_df_utility <- as.data.frame(table(senior_management_support_v_utility))
+g <- ggplot(data=senior_management_support_df_utility, aes(x=senior_management_support_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") +xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. 3. Frequency of responses by water utility managers to the question: "Senior management considers that Climate change is a key risk that needs addressing from a whole-of-business perspective," given a rating scale between 'strongly disagree' to 'strongly agree.'  
+
+### Resourcing adaptation
+
+Resources are required for adaptation; and whether these are personnel, cash-funding, information, data, guidelines or the availability of computational resources, they all need to be provided.  In accordance to suggestions provided by the WSAA Guidelines, we asked a number of questions related to the resourcing of adaptation.  
+
+#### Resources for the coordination of, and input into the adaptation process
+As shown in Fig 4, below, resources are available for the coordination of, and input into the adaptation option. However, it is notable that the strength of response by senior managers regarding resourcing is lower than that for support from leadership, as given in Figures 1-3.  
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+sufficient_resiources_v <- df$SufficientResources
+sufficient_resiources_v  <- factor(sufficient_resiources_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+sufficient_resiources_df <- as.data.frame(table(sufficient_resiources_v))
+g <- ggplot(data=sufficient_resiources_df, aes(x=sufficient_resiources_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") +xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+sufficient_resiources_v_utility <- df_utility$SufficientResources
+sufficient_resiources_v_utility  <- factor(sufficient_resiources_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+sufficient_resiources_df_utility <- as.data.frame(table(sufficient_resiources_v_utility))
+g <- ggplot(data=sufficient_resiources_df_utility, aes(x=sufficient_resiources_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") +xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. 4. Frequency of responses by water utility managers to the question: "Sufficient resources are provided for coordination and input into the adaptation process," given a rating scale between 'strongly disagree' to 'strongly agree.'  
+
+### Senior management is committed to resourcing climate adaptation
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+senior_management_resourcing_v <- df$SeniorManagementResourcing
+senior_management_resourcing_v  <- factor(senior_management_resourcing_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+senior_management_resourcing_df <- as.data.frame(table(senior_management_resourcing_v))
+g <- ggplot(data=senior_management_resourcing_df, aes(x=senior_management_resourcing_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") +xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+senior_management_resourcing_v_utility <- df_utility$SeniorManagementResourcing
+senior_management_resourcing_v_utility  <- factor(senior_management_resourcing_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+senior_management_resourcing_df_utility <- as.data.frame(table(senior_management_resourcing_v_utility))
+g <- ggplot(data=senior_management_resourcing_df_utility, aes(x=senior_management_resourcing_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") +xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Resources still lacking for climate adaptation processes
+
+```{r echo=FALSE, results='hide'}
+responses <- df_other_utilities$ResourcesRequired
+responses <- responses[!is.na(responses)]
+responses_utility <- df_utility$ResourcesRequired
+responses_utility <- responses_utility[!is.na(responses_utility)]
+```
+
+
+Responses from `r utility_name` were:
+
+```{r echo=FALSE, results='asis'}
+cat(paste('-', responses_utility), sep = '\n') 
+```
+
+Additional responses from those in other Australian utilities, included:
+
+```{r echo=FALSE, results='asis'}
+cat(paste('-', responses), sep = '\n') 
+```
+
+
+### A policy, position, strategy or direction-setting document provides clear, transparent and ongoing commitment to adaptation planning over the long-term at my water utility/organisation
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+strategy_document_v <- df$StrategyDocument
+strategy_document_v  <- factor(strategy_document_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+strategy_document_df <- as.data.frame(table(strategy_document_v))
+g <- ggplot(data=strategy_document_df, aes(x=strategy_document_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") +xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+strategy_document_v_utility <- df_utility$StrategyDocument
+strategy_document_v_utility  <- factor(strategy_document_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+strategy_document_df_utility <- as.data.frame(table(strategy_document_v_utility))
+g <- ggplot(data=strategy_document_df_utility, aes(x=strategy_document_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") +xlab("Strength of aggreement")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### The CEO has sufficient time allocated to reviewing the implementation and success of adaptation measures
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+ceo_time_v <- df$CEOAllocatedTime
+ceo_time_v  <- factor(ceo_time_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+ceo_time_df <- as.data.frame(table(ceo_time_v))
+g <- ggplot(data=ceo_time_df, aes(x=ceo_time_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") +xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+ceo_time_v_utility <- df_utility$CEOAllocatedTime
+ceo_time_v_utility  <- factor(ceo_time_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+ceo_time_df_utility <- as.data.frame(table(ceo_time_v_utility))
+g <- ggplot(data=ceo_time_df_utility, aes(x=ceo_time_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") +xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### The board includes someone I would regard as a champion for climate change adaptation
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+champion_v <- df$ChampionOnBoard
+champion_v  <- factor(champion_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+champion_df <- as.data.frame(table(champion_v))
+g <- ggplot(data=champion_df, aes(x=champion_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+champion_v_utility <- df_utility$ChampionOnBoard
+champion_v_utility  <- factor(champion_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+champion_df_utility <- as.data.frame(table(champion_v_utility))
+g <- ggplot(data=champion_df_utility, aes(x=champion_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### There is efficient coordination of climate adaptation activity at the senior management level
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+coordination_v <- df$Coordination
+coordination_v  <- factor(coordination_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+coordination_df <- as.data.frame(table(coordination_v))
+g <- ggplot(data=coordination_df, aes(x=coordination_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+coordination_v_utility <- df_utility$Coordination
+coordination_v_utility  <- factor(coordination_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+coordination_df_utility <- as.data.frame(table(coordination_v_utility))
+g <- ggplot(data=coordination_df_utility, aes(x=coordination_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### The effectiveness of adaptation is appropriately monitored and reviewed at my water utility/organisation
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+monitored_v <- df$Monitored
+monitored_v  <- factor(monitored_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+monitored_df <- as.data.frame(table(monitored_v))
+g <- ggplot(data=monitored_df, aes(x=monitored_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+monitored_v_utility <- df_utility$Monitored
+monitored_v_utility  <- factor(monitored_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+monitored_df_utility <- as.data.frame(table(monitored_v_utility))
+g <- ggplot(data=monitored_df_utility, aes(x=monitored_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("") + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### The internal and external communication and engagement pathways at our organisation are effective for climate adaptation work
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+communication_v <- df$Communication
+communication_v  <- factor(communication_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+communication_df <- as.data.frame(table(communication_v))
+g <- ggplot(data=communication_df, aes(x=communication_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+communication_v_utility <- df_utility$Communication
+communication_v_utility  <- factor(communication_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+communication_df_utility <- as.data.frame(table(communication_v_utility))
+g <- ggplot(data=communication_df_utility, aes(x=communication_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Climate change adaptation responsibilities are included within position descriptions and performance contracts
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+positions_v <- df$PositionDescriptions
+positions_v  <- factor(positions_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+positions_df <- as.data.frame(table(positions_v))
+g <- ggplot(data=positions_df, aes(x=positions_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+positions_v_utility <- df_utility$PositionDescriptions
+positions_v_utility  <- factor(positions_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+positions_df_utility <- as.data.frame(table(positions_v_utility))
+g <- ggplot(data=positions_df_utility, aes(x=positions_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Techniques used for climate adaptation strategy
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+library(reshape2)
+techniques_df <- data.frame(Balanced_scorecard = as.vector(table(df$BalancedScoresheet, exclude=NULL)), PEST = as.vector(table(df$PEST, exclude=NULL)), SWOT = as.vector(table(df$SWOT, exclude=NULL)), Gap_analysis = as.vector(table(df$GapAnalysis, exclude=NULL)))
+techniques_df <- data.frame(techniques_df, use=c('used', 'unused'))
+techniques_df_long <- melt(techniques_df) 
+colnames(techniques_df_long)<-c('use', 'technique', 'count')
+
+techniques_long_df <- stack(techniques_df_long, select=)
+g <- ggplot(data=techniques_df_long, aes(x=technique, y=count, fill=use))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Balanced_scorecard" = "Balanced scorecard", "PEST" = "PEST analysis",
+                              "SWOT" = "SWOT analysis", "Gap_analysis" = "Gap analysis")) + ylab("Proportional use") + xlab("Technique") + theme(axis.text.x = element_blank(), legend.position="none")  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.5, height = 1, just = c('left', 'bottom')))
+
+techniques_df_utility <- data.frame(Balanced_scorecard = as.vector(table(df_utility$BalancedScoresheet, exclude=NULL)), PEST = as.vector(table(df_utility$PEST, exclude=NULL)), SWOT = as.vector(table(df_utility$SWOT, exclude=NULL)), Gap_analysis = as.vector(table(df_utility$GapAnalysis, exclude=NULL)))
+techniques_df_utility <- data.frame(techniques_df_utility, use=c('used', 'unused'))
+techniques_df_utility_long <- melt(techniques_df_utility) 
+colnames(techniques_df_utility_long)<-c('use', 'technique', 'count')
+
+techniques_long_df_utility <- stack(techniques_df_utility_long, select=)
+g <- ggplot(data=techniques_df_utility_long, aes(x=technique, y=count, fill=use))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Balanced_scorecard" = "Balanced scorecard", "PEST" = "PEST analysis",
+                              "SWOT" = "SWOT analysis", "Gap_analysis" = "Gap analysis")) + ylab("Proportional use") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.5, y=0, width = 0.5, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+#### Other strategies used
+
+```{r echo=FALSE, results='hide'}
+responses_used <- df_other_utilities$OtherStrategiesUsed
+responses_should <- df_other_utilities$OtherStrategiesUsed
+responses_used_utility <- df_utility$OtherStrategiesUsed
+responses_should_utility <- df_utility$OtherStrategiesUsed
+```
+
+Responses from `r utility_name` were:
+
+```{r echo=FALSE, results='asis'}
+cat(paste('-',responses_used_utility[!is.na(responses_used_utility)]), sep="\n")
+```
+
+While other responses from other Australian utilities, included:
+
+```{r echo=FALSE, results='asis'}
+cat(paste('-',responses_used[!is.na(responses_used)]), sep="\n")
+```
+
+#### Other strategies that should be used
+
+Responses from `r utility_name` were:
+
+```{r echo=FALSE, results='asis'}
+cat(paste('-',responses_should_utility[!is.na(responses_should_utility)]), sep="\n")
+```
+
+While other responses from other Australian utilities, included:
+
+```{r echo=FALSE, results='asis'}
+cat(paste('-',responses_should[!is.na(responses_should)]), sep="\n")
+```
+
+### The use of scenario planning for developing corporate strategy related to climate change adaptation
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+scenarios_v <- df$ScenarioPlanning
+scenarios_v  <- factor(scenarios_v, levels=c('No', 'Yes'), ordered = TRUE)
+scenarios_df <- as.data.frame(table(scenarios_v))
+scenarios_df <- data.frame(scenarios_df, dummy = c(1, 1))
+g <- ggplot(data=scenarios_df, aes(x=dummy, y=Freq, fill=scenarios_v))
+# http://www.sthda.com/english/wiki/ggplot2-pie-chart-quick-start-guide-r-software-and-data-visualization 
+print(g + geom_col() +  coord_flip() + ylab("Proprtional use") + theme(axis.text.x = element_blank(), axis.ticks = element_blank(), axis.text.y = element_blank(), legend.position="none") + xlab("") + coord_polar("y", start=0) + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.5, height = 1, just = c('left', 'bottom')))
+      
+scenarios_v_utility <- df_utility$ScenarioPlanning
+scenarios_v_utility  <- factor(scenarios_v_utility, levels=c('No', 'Yes'), ordered = TRUE)
+scenarios_df_utility <- as.data.frame(table(scenarios_v_utility))
+scenarios_df_utility <- data.frame(scenarios_df_utility, dummy = c(1, 1))
+g <- ggplot(data=scenarios_df_utility, aes(x=dummy, y=Freq, fill=scenarios_v_utility))
+# http://www.sthda.com/english/wiki/ggplot2-pie-chart-quick-start-guide-r-software-and-data-visualization 
+print(g + geom_col() +  coord_flip() + ylab("Proprtional use") + theme(axis.text.x = element_blank(), axis.ticks = element_blank(), axis.text.y = element_blank()) + xlab("") + coord_polar("y", start=0) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.5, y=0, width = 0.5, height = 1, just = c('left', 'bottom'))) 
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Scenario planning is a core method used to ensure flexible long-term plans to create a resilient utiity that is robust with respect to external forces, including climate change
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+sc_extensiveness_v <- df$ScenarioPlanningExtensiveness
+sc_extensiveness_v  <- factor(sc_extensiveness_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+sc_extensiveness_df <- as.data.frame(table(sc_extensiveness_v))
+g <- ggplot(data=sc_extensiveness_df, aes(x=sc_extensiveness_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+sc_extensiveness_v_utility <- df_utility$ScenarioPlanningExtensiveness
+sc_extensiveness_v_utility  <- factor(sc_extensiveness_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+sc_extensiveness_df_utility <- as.data.frame(table(sc_extensiveness_v_utility))
+g <- ggplot(data=sc_extensiveness_df_utility, aes(x=sc_extensiveness_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Consistent sets of climate change scenarios are used across entire organisations
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+consistent_sc_v <- df$ConsistentScenarios
+consistent_sc_v  <- factor(consistent_sc_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+consistent_sc_df <- as.data.frame(table(consistent_sc_v))
+g <- ggplot(data=consistent_sc_df, aes(x=consistent_sc_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+consistent_sc_v_utility <- df_utility$ConsistentScenarios
+consistent_sc_v_utility  <- factor(consistent_sc_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+consistent_sc_df_utility <- as.data.frame(table(consistent_sc_v_utility))
+g <- ggplot(data=consistent_sc_df_utility, aes(x=consistent_sc_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom'))) 
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Scenarios include regulatory and innovation factors
+```{r fig.width=7, fig.height=4, echo=FALSE} 
+grid.newpage()
+regulatory_sc_v <- df$RegulatoryScenarios
+innovation_sc_v <- df$InnovationScenarios
+regulatory_sc_v  <- factor(regulatory_sc_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+innovation_sc_v  <- factor(innovation_sc_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+sc_factors_df <- data.frame(as.data.frame(table(regulatory_sc_v)), as.data.frame(table(innovation_sc_v))[2])
+names(sc_factors_df) <- c('response', 'regulatory factors', 'innovation factors')
+sc_factors_df <- melt(sc_factors_df)
+g <- ggplot(data=sc_factors_df, aes(x=response, y=value))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results") + facet_grid(variable ~ .), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+regulatory_sc_v_utility <- df_utility$RegulatoryScenarios
+innovation_sc_v_utility <- df_utility$InnovationScenarios
+regulatory_sc_v_utility  <- factor(regulatory_sc_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+innovation_sc_v_utility  <- factor(innovation_sc_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+sc_factors_df_utility <- data.frame(as.data.frame(table(regulatory_sc_v_utility)), as.data.frame(table(innovation_sc_v_utility))[2])
+names(sc_factors_df_utility) <- c('response', 'regulatory factors', 'innovation factors')
+sc_factors_df_utility <- melt(sc_factors_df_utility)
+g <- ggplot(data=sc_factors_df_utility, aes(x=response, y=value))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")) + facet_grid(variable ~ .), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Possible, relevant and challenging scenarios are used to help identify key weaknesses and opportunities
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+possible_challenging_sc_v <- df$PossibleRelevantChallengingScenarios
+possible_challenging_sc_v  <- factor(possible_challenging_sc_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+possible_challenging_sc_df <- as.data.frame(table(possible_challenging_sc_v))
+g <- ggplot(data=possible_challenging_sc_df, aes(x=possible_challenging_sc_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+possible_challenging_sc_v_utility <- df_utility$PossibleRelevantChallengingScenarios
+possible_challenging_sc_v_utility  <- factor(possible_challenging_sc_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+possible_challenging_sc_df_utility <- as.data.frame(table(possible_challenging_sc_v_utility))
+g <- ggplot(data=possible_challenging_sc_df_utility, aes(x=possible_challenging_sc_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Human influence on the climate system is clear, and recent anthropogenic emissions of greenhouse gases are the highest in history
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+anthropogenic_change_clear_v <- df$OpinionClimaticHumanInfluence
+anthropogenic_change_clear_v  <- factor(anthropogenic_change_clear_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+anthropogenic_change_clear_df <- as.data.frame(table(anthropogenic_change_clear_v))
+g <- ggplot(data=anthropogenic_change_clear_df, aes(x=anthropogenic_change_clear_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+anthropogenic_change_clear_v_utility <- df_utility$OpinionClimaticHumanInfluence
+anthropogenic_change_clear_v_utility  <- factor(anthropogenic_change_clear_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+anthropogenic_change_clear_df_utility <- as.data.frame(table(anthropogenic_change_clear_v_utility))
+g <- ggplot(data=anthropogenic_change_clear_df_utility, aes(x=anthropogenic_change_clear_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Recent climate changes have already had widespread impacts on human and natural systems
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+anthropogenic_change_already_v <- df$OpinionPresentHumanImpact
+anthropogenic_change_already_v  <- factor(anthropogenic_change_already_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+anthropogenic_change_already_df <- as.data.frame(table(anthropogenic_change_already_v))
+g <- ggplot(data=anthropogenic_change_already_df, aes(x=anthropogenic_change_already_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+anthropogenic_change_already_v_utility <- df_utility$OpinionPresentHumanImpact
+anthropogenic_change_already_v_utility  <- factor(anthropogenic_change_already_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+anthropogenic_change_already_df_utility <- as.data.frame(table(anthropogenic_change_already_v_utility))
+g <- ggplot(data=anthropogenic_change_already_df_utility, aes(x=anthropogenic_change_already_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### The science is clear that continued emission of greenhouse gases will cause further warming and long-lasting changes in all components of the climate system, increasing the likelihood of severe, pervasive and irreversible impacts for people and ecosystems
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+science_clear_v <- df$OpinionScienceClear
+science_clear_v  <- factor(science_clear_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+science_clear_df <- as.data.frame(table(science_clear_v))
+g <- ggplot(data=science_clear_df, aes(x=science_clear_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+science_clear_v_utility <- df_utility$OpinionScienceClear
+science_clear_v_utility  <- factor(science_clear_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+science_clear_df_utility <- as.data.frame(table(science_clear_v_utility))
+g <- ggplot(data=science_clear_df_utility, aes(x=science_clear_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom'))) 
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Climate change significantly threatens??the reliability of water supply to consumers
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+reliability_v <- df$OpinionClimateThreatensReliability
+reliability_v  <- factor(reliability_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+reliability_df <- as.data.frame(table(reliability_v))
+g <- ggplot(data=reliability_df, aes(x=reliability_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+reliability_v_utility <- df_utility$OpinionClimateThreatensReliability
+reliability_v_utility  <- factor(reliability_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+reliability_df_utility <- as.data.frame(table(reliability_v_utility))
+g <- ggplot(data=reliability_df_utility, aes(x=reliability_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Climate change significantly threatens??the affordability of water supply to consumers
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+affordability_v <- df$OpinionClimateThreatensReliability
+affordability_v  <- factor(affordability_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+affordability_df <- as.data.frame(table(affordability_v))
+g <- ggplot(data=affordability_df, aes(x=affordability_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+affordability_v_utility <- df_utility$OpinionClimateThreatensReliability
+affordability_v_utility  <- factor(affordability_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+affordability_df_utility <- as.data.frame(table(affordability_v_utility))
+g <- ggplot(data=affordability_df_utility, aes(x=affordability_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Climate change will significantly affect the consumptive behaviours or water??demands of consumers
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+behaviour_v <- df$OpinionClimateAffectrsBehaviour
+behaviour_v  <- factor(behaviour_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+behaviour_df <- as.data.frame(table(behaviour_v))
+g <- ggplot(data=behaviour_df, aes(x=behaviour_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+behaviour_v_utility <- df_utility$OpinionClimateAffectrsBehaviour
+behaviour_v_utility  <- factor(behaviour_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+behaviour_df_utility <- as.data.frame(table(behaviour_v_utility))
+g <- ggplot(data=behaviour_df_utility, aes(x=behaviour_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("") + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Climate change will significantly affect??business processes
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+business_v <- df$OpinionClimateAffectrsBusiness
+business_v  <- factor(business_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+business_df <- as.data.frame(table(business_v))
+g <- ggplot(data=business_df, aes(x=business_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+business_v_utility <- df_utility$OpinionClimateAffectrsBusiness
+business_v_utility  <- factor(business_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+business_df_utility <- as.data.frame(table(business_v_utility))
+g <- ggplot(data=business_df_utility, aes(x=business_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### For the water sector, enhancing capacity to mitigate and adapt are part of the essential foundation for managing climate change risks
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+foundation_v <- df$OpinionAdaptationFoundation
+foundation_v  <- factor(foundation_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+foundation_df <- as.data.frame(table(foundation_v))
+g <- ggplot(data=foundation_df, aes(x=foundation_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+foundation_v_utility <- df_utility$OpinionAdaptationFoundation
+foundation_v_utility  <- factor(foundation_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+foundation_df_utility <- as.data.frame(table(foundation_v_utility))
+g <- ggplot(data=foundation_df_utility, aes(x=foundation_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Many adaptation and mitigation options can help address climate change, but no single option is sufficient in??itself.
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+portfolios_v <- df$OpinionCombinatorialApproach
+portfolios_v  <- factor(portfolios_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+portfolios_df <- as.data.frame(table(portfolios_v))
+g <- ggplot(data=portfolios_df, aes(x=portfolios_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+portfolios_v_utility <- df_utility$OpinionCombinatorialApproach
+portfolios_v_utility  <- factor(portfolios_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+portfolios_df_utility <- as.data.frame(table(portfolios_v_utility))
+g <- ggplot(data=portfolios_df_utility, aes(x=portfolios_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("") + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+#### Comments
+```{r echo=FALSE, results='hide'}
+responses <- df_other_utilities$CommentsCombinatorialApproach
+responses <- responses[!is.na(responses)]
+responses_utility <- df_utility$CommentsCombinatorialApproach
+responses_utility <- responses_utility[!is.na(responses_utility)]
+```
+
+Comments from `r utility_name` were:
+```{r echo=FALSE, results='asis'}
+cat(paste('-',responses_utility), sep="\n")
+```
+
+While other comments from other Australian utilities, included:
+```{r echo=FALSE, results='asis'}
+cat(paste('-',responses), sep="\n")
+```
+
+
+### Effective implementation depends on policies and cooperation at all scales and can be enhanced through integrated responses that link mitigation and adaptation with other water utility objectives/KPIs.
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+holistic_integrated_v <- df$OpinionIntegrationCooperation
+holistic_integrated_v  <- factor(holistic_integrated_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+holistic_integrated_df <- as.data.frame(table(holistic_integrated_v))
+g <- ggplot(data=holistic_integrated_df, aes(x=holistic_integrated_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+holistic_integrated_v_utility <- df_utility$OpinionIntegrationCooperation
+holistic_integrated_v_utility <- factor(holistic_integrated_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+holistic_integrated_df_utility <- as.data.frame(table(holistic_integrated_v_utility))
+g <- ggplot(data=holistic_integrated_df_utility, aes(x=holistic_integrated_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Adaptive water management techniques, including scenario planning, learning-based approaches and flexible and low-regret solutions, are helpful in adapting to uncertain hydrological changes
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+helpful_approaches_v <- df$OpinionHelpfulApproaches
+helpful_approaches_v  <- factor(helpful_approaches_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+helpful_approaches_df <- as.data.frame(table(helpful_approaches_v))
+g <- ggplot(data=helpful_approaches_df, aes(x=helpful_approaches_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+helpful_approaches_v_utility <- df_utility$OpinionHelpfulApproaches
+helpful_approaches_v_utility  <- factor(helpful_approaches_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+helpful_approaches_df_utility <- as.data.frame(table(helpful_approaches_v_utility))
+g <- ggplot(data=helpful_approaches_df_utility, aes(x=helpful_approaches_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("") + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### The integration of adaptation into planning and decision-making plays a key role in translating climate change adaptation planning to implementation
+
+```{r fig.width=7, fig.height=2, echo=FALSE}
+grid.newpage()
+integration_v <- df$OpinionAdaptationInPlanningDecisionMaking
+integration_v  <- factor(integration_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+integration__df <- as.data.frame(table(integration_v))
+g <- ggplot(data=integration__df, aes(x=integration_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+integration_v_utility <- df_utility$OpinionAdaptationInPlanningDecisionMaking
+integration_v_utility  <- factor(integration_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+integration__df_utility <- as.data.frame(table(integration_v_utility))
+g <- ggplot(data=integration__df_utility, aes(x=integration_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Investment in research and diffusion/transfer of research in support of climate change adaptation is important
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+research_v <- df$OpinionResearchImportant
+research_v  <- factor(research_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+research_df <- as.data.frame(table(research_v))
+g <- ggplot(data=research_df, aes(x=research_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+research_v_utility <- df_utility$OpinionResearchImportant
+research_v_utility  <- factor(research_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+research_df_utility <- as.data.frame(table(research_v_utility))
+g <- ggplot(data=research_df_utility, aes(x=research_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Effective climate change adaptation involves an integrated approach with other service providers and managers of public goods (e.g. energy, telecommunications, transport, supply chains)
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+interdependencies_v <- df$OpinionInterdependencies
+interdependencies_v  <- factor(interdependencies_v, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+interdependencies_df <- as.data.frame(table(interdependencies_v))
+g <- ggplot(data=interdependencies_df, aes(x=interdependencies_v, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("Strength of aggreement") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+interdependencies_v_utility <- df_utility$OpinionInterdependencies
+interdependencies_v_utility  <- factor(interdependencies_v_utility, levels=c('Not sure', 'Strongly disagree', '2', 'Neither agree nor disagree', '4', 'Strongly agree'), ordered = TRUE)
+interdependencies_df_utility <- as.data.frame(table(interdependencies_v_utility))
+g <- ggplot(data=interdependencies_df_utility, aes(x=interdependencies_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + scale_x_discrete(labels=c("Not sure" = "Not sure", "Strongly disagree" = "Strongly disagree",
+                              "2" = "", "Neither agree nor disagree" = "Neither agree nor disagree", "4" = "", "Strongly agree" =  "Strongly agree")) + ylab("Frequency of response") + xlab("")  + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
+### Core areas surveyed
+
+```{r fig.width=7, fig.height=2, echo=FALSE} 
+grid.newpage()
+core_areas_v <- df$CoreArea
+core_areas_v  <- factor(core_areas_v, levels=c('Source warers and supply', 'Built assets', 'Environmental management', 'People and Workplaces', 'Customer and product delivery', 'Corporate governance'), ordered = FALSE)
+core_areas_df <- as.data.frame(table(core_areas_v))
+g <- ggplot(data=core_areas_df, aes(x=core_areas_v, y=Freq))
+print(g + geom_col() +  coord_flip() + ylab("Frequency of response") + xlab("Core areas") + theme(axis.text.x = element_blank())  + ggtitle("National results"), vp = viewport(x=0, y=0, width = 0.6, height = 1, just = c('left', 'bottom')))
+
+core_areas_v_utility <- df_utility$CoreArea
+core_areas_v_utility  <- factor(core_areas_v_utility, levels=c('Source warers and supply', 'Built assets', 'Environmental management', 'People and Workplaces', 'Customer and product delivery', 'Corporate governance'), ordered = FALSE)
+core_areas_df_utility <- as.data.frame(table(core_areas_v_utility))
+g <- ggplot(data=core_areas_df_utility, aes(x=core_areas_v_utility, y=Freq))
+print(g + geom_col() +  coord_flip() + ylab("Frequency of response") + xlab("") + theme(axis.text.x = element_blank(), axis.text.y = element_blank()) + ggtitle(paste(utility_name, "results")), vp = viewport(x=0.6, y=0, width = 0.4, height = 1, just = c('left', 'bottom')))
+```
+Fig. X. Frequency of responses by water utility managers to the question: "YYY," given a rating scale between 'strongly disagree' to 'strongly agree.'
+
