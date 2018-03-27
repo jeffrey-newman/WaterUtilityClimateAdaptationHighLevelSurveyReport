@@ -1,5 +1,4 @@
 ---
-title: "Status of climate adaptation in the Australian Water Utilities: results from survey of higher level managers"
 output:
   html_document:
     df_print: paged
@@ -16,13 +15,12 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 2
+params:
+  set_title: "Status of climate adaptation in the Australian Water Utilities: results from survey of higher level managers"
+title: "Status of climate adaptation at `r utility_name` compared to Australian Water Utilities: results from survey of higher level managers"
 ---
 
 <!--For automatic fig captioning and citation, see http://derekogle.com/fishR/2015-09-17-Figure-Table-Captions-in-Markdown-->
-
-```{r echo=FALSE, results='hide'}
-utility_name <- 'utility_name'
-```
 
 # Results for `r utility_name` and comparison to national data from other utilities surveyed
 
@@ -30,7 +28,7 @@ We conducted a survey, targeted at higher-level managers, with the primary aim o
 
 ```{r echo=FALSE, results='hide'}
 library(readxl)
-df <- read_excel('/home/a1091793/Documents/Projects/WaterRA Data driven Climate Adaptation/Survey/Results 23 Feb 2018/High level survey of climate adaptation v2 aggregated.xlsx')
+df <- read_excel(survey_data_xl_path)
 df_utility <- df[df$WaterUtility == utility_name, ]
 df_other_utilities <- df[df$WaterUtility != utility_name, ]
 ```
