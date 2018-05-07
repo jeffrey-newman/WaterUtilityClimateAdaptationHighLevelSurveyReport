@@ -12,6 +12,11 @@ output:
     number_sections: yes
     toc: true
     toc_depth: 2
+  word_document:
+    fig_caption: yes
+    number_sections: yes
+    toc: true
+    toc_depth: 2
 ---
 
 We conducted a survey, targeted at higher-level managers, with the primary aim of identifying officers that have produced climate adaptation information. In addition, we also wanted to capture the extent to which climate adaptation is incorporated within decision making and the importance of climate change in the mindset of managers and within leadership. This is because the role of climate-adaptation within water utilities is significantly determined by higher-level managers and leaders.  

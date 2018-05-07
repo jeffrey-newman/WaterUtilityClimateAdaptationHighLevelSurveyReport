@@ -4,20 +4,26 @@ out_dir <- "/home/a1091793/Dropbox (WaterSystems)/Projects/Climate Adaptation/Ph
 utility_name <- 'Water Corporation'
 render("ComparisonAnalysisTemplate.Rmd", output_format = 'pdf_document',  output_dir=out_dir, output_file=paste(utility_name, ".pdf"))
 render("ComparisonAnalysisTemplate.Rmd", output_format = 'html_document',  output_dir=out_dir, output_file=paste(utility_name, ".html"))
+render("ComparisonAnalysisTemplate.Rmd", output_format = 'word_document',  output_dir=out_dir, output_file=paste(utility_name, ".doc"))
 utility_name <- 'Barwon Water'
 render("ComparisonAnalysisTemplate.Rmd", output_format = 'pdf_document',  output_dir=out_dir, output_file=paste(utility_name, ".pdf"))
 render("ComparisonAnalysisTemplate.Rmd", output_format = 'html_document',  output_dir=out_dir, output_file=paste(utility_name, ".html"))
+render("ComparisonAnalysisTemplate.Rmd", output_format = 'word_document',  output_dir=out_dir, output_file=paste(utility_name, ".doc"))
 utility_name <- 'City West Water'
 render("ComparisonAnalysisTemplate.Rmd", output_format = 'pdf_document',  output_dir=out_dir, output_file=paste(utility_name, ".pdf"))
 render("ComparisonAnalysisTemplate.Rmd", output_format = 'html_document',  output_dir=out_dir, output_file=paste(utility_name, ".html"))
+render("ComparisonAnalysisTemplate.Rmd", output_format = 'word_document',  output_dir=out_dir, output_file=paste(utility_name, ".doc"))
 utility_name <- 'Coliban Water'
 render("ComparisonAnalysisTemplate.Rmd", output_format = 'pdf_document',  output_dir=out_dir, output_file=paste(utility_name, ".pdf"))
 render("ComparisonAnalysisTemplate.Rmd", output_format = 'html_document',  output_dir=out_dir, output_file=paste(utility_name, ".html"))
+render("ComparisonAnalysisTemplate.Rmd", output_format = 'word_document',  output_dir=out_dir, output_file=paste(utility_name, ".doc"))
 utility_name <- 'Melbourne Water'
 render("ComparisonAnalysisTemplate.Rmd", output_format = 'pdf_document',  output_dir=out_dir, output_file=paste(utility_name, ".pdf"))
 render("ComparisonAnalysisTemplate.Rmd", output_format = 'html_document',  output_dir=out_dir, output_file=paste(utility_name, ".html"))
+render("ComparisonAnalysisTemplate.Rmd", output_format = 'word_document',  output_dir=out_dir, output_file=paste(utility_name, ".doc"))
 utility_name <- 'South East Water'
 render("ComparisonAnalysisTemplate.Rmd", output_format = 'pdf_document',  output_dir=out_dir, output_file=paste(utility_name, ".pdf"))
 render("ComparisonAnalysisTemplate.Rmd", output_format = 'html_document',  output_dir=out_dir, output_file=paste(utility_name, ".html"))
+render("ComparisonAnalysisTemplate.Rmd", output_format = 'word_document',  output_dir=out_dir, output_file=paste(utility_name, ".doc"))
 
 
